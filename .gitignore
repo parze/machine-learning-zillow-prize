@@ -1,0 +1,11 @@
+
+data
+dep
+src/lab
+*.iml
+.idea
+*.aux
+*.log
+*.toc
+*.pdf
+*.out
