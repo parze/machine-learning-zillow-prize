@@ -127,6 +127,29 @@ Looking at Figure \ref{fig:prop-nan} more than half of the data is not there and
 data loss is unevenly distribute on featues. About 30 percent of the features will
 most likely not contribute to a better model when they do not contain any information.
 
+\begin{figure}
+\centering
+\includegraphics[width=0.6\textwidth]{./img/prop-important.png}
+\caption{\label{fig:prop-important} Correlation between features and the log error}
+\end{figure}
+There are many features, so let take a look at the correlation between the logerror and these features to
+see which ones seems to be more likely to improve the prediction than others.
+Looking at Figure \ref{fig:prop-important} we can see
+\begin{itemize}
+    \item corrolation is low in general
+    \item a few features are missing corrolation most likely because there are only one value
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{./img/prop-corr-feature.png}
+\caption{\label{fig:prop-corr-feature} Correlation between features and the log error}
+\end{figure}
+If we look at features with a corrolation less than -0.01 and more than 0.02 we may filter out nine features. High
+corrolation between these featues might indicate that they contain the same type of information which most
+likely makes prediction harder than if little correlation exists. Looking at Figure \ref{fig:prop-corr-feature}
+show quite high correlation between features, especially between featues relating to room counts and house size.
+
 
 %Exploratory Visualization
 %A visualization has been provided that summarizes or extracts a relevant characteristic or feature about the dataset
