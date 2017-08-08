@@ -188,12 +188,28 @@ The data is prepared in following steps before feeded to LightGBM and Xgboost.
     \item Adding the month of the transaction as a feature
     \item Removed columns \textit{parcelid} and \textit{transactiondate} since these will most likely not
         improve the prediction
+    \item Split data into train and test
 \end{itemize}
 
 \subsection{Implementation}
 % The process for which metrics, algorithms, and techniques were implemented with the given datasets or input
 % data has been thoroughly documented. Complications that occurred during the coding process are discussed.
-```
+The overall implementation steps are
+% TODO: replace with a ordered itemizer
+% TODO: get name for performance matric
+\begin{itemize}
+    \item Preprocessing and train for LightGBM using train data
+    \item Preprocessing and train for Xgboost using train data
+    \item Use linear regression to find the best weights on weighing together LightGBM, Xgboost, and the constant
+        model using the train data
+    \item Predict \textit{logerror} for test data using LightGBM
+    \item Predict \textit{logerror} for test data using Xgboost
+    \item Predict final \textit{logerror} for test data weighing weighing together LightGBM, Xgboost, and the
+        constant model
+    \item Compute the performance using the ?? matric
+    \item Adjust configuration parameters for LightGBM and Xgboost and start over at the top
+\end{itemize}
+
 
 \subsection{Refinement}
 % The process of improving upon the algorithms and techniques used is clearly documented. Both the initial and
