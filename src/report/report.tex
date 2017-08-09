@@ -61,7 +61,7 @@ Kaggle community can improve on it creating an even better model.
 The metric is defined by Zillow witch is asking to predict the \textit{logerror} between their Zestimate model and the
 actual sale price, given all the features of a home. The log error is defined as
 \[ logerror = log(Zestimate) - log(SalePrice) \]
-% TODO: Define the accual matric to use when models are learning
+% TODO: Define the actual metric to use when models are learning
 
 
 \section{Analysis}
@@ -87,7 +87,7 @@ We will be working with following data files
     \item \textit{sample\_submission.csv} - a sample submission file in the correct format
 \end{itemize}
 
-\subsubsection{Traning Set File}
+\subsubsection{Training Set File}
 The training set in file \textit{train\_2016.csv} contains 90275 rows and three columns
 \begin{itemize}
     \item \textit{parcelid} - which is the id of the property.
@@ -128,7 +128,7 @@ features. It seems like some of the columns contain less information in the form
 \caption{\label{fig:prop-nan} Amount of information in features}
 \end{figure}
 Looking at Figure \ref{fig:prop-nan} more than half of the data is not there and the
-data loss is unevenly distribute on featues. About 30 percent of the features will
+data loss is unevenly distribute on features. About 30 percent of the features will
 most likely not contribute to a better model when they do not contain any information.
 
 \begin{figure}
@@ -140,8 +140,8 @@ There are many features, so let take a look at the correlation between the loger
 see which ones seems to be more likely to improve the prediction than others.
 Looking at Figure \ref{fig:prop-important} we can see
 \begin{itemize}
-    \item corrolation is low in general which indicate that improving prediction will be hard
-    \item a few features are missing corrolation most likely because there are only one value
+    \item correlation is low in general which indicate that improving prediction will be hard
+    \item a few features are missing correlation most likely because there are only one value
 \end{itemize}
 
 \begin{figure}
@@ -149,10 +149,10 @@ Looking at Figure \ref{fig:prop-important} we can see
 \includegraphics[width=1\textwidth]{./img/prop-corr-feature.png}
 \caption{\label{fig:prop-corr-feature} Correlation between features and the log error}
 \end{figure}
-If we look at features with a corrolation less than -0.01 and more than 0.02 we may filter out nine features. High
-corrolation between these featues might indicate that they contain the same type of information which most
+If we look at features with a correlation less than -0.01 and more than 0.02 we may filter out nine features. High
+correlation between these features might indicate that they contain the same type of information which most
 likely makes prediction harder than if little correlation exists. Looking at Figure \ref{fig:prop-corr-feature}
-show quite high correlation between features, especially between featues relating to room counts and house size.
+show quite high correlation between features, especially between features relating to room counts and house size.
 
 
 \subsection{Algorithms and Techniques}
@@ -160,16 +160,16 @@ show quite high correlation between features, especially between featues relatin
 % the characteristics of the problem.
 
 % todo
-% lista fördelar med LightGBM
-% lista fördelar med Xgboost
-% beskriv varför konstant modell är en enkel model och kan förbättra resultat
-% beskriv varför det är bra att vikta resultatet
+% list pros and cons for LightGBM
+% list pros and cons for Xgboost
+% describe why a constant model can improve the result
+% describe why it is good to weight the result
 
 \subsection{Benchmark}
 % Student clearly defines a benchmark result or threshold for comparing performances of solutions obtained.
 The solution will be compared in two ways. First by splitting up the training data in file \textit{train\_2016.csv}
 into a train and a test set. This will enable to test different models and configuration of models. Good candidates
-can then be omited to the public leader board of Kaggle to be comapred towards other team models.
+can then be omitted to the public leader board of Kaggle to be compared towards other team models.
 
 \section{Methodology}
 
@@ -177,10 +177,10 @@ can then be omited to the public leader board of Kaggle to be comapred towards o
 % All preprocessing steps have been clearly documented. Abnormalities or characteristics about the data or
 % input that needed to be addressed have been corrected. If no data preprocessing is necessary, it has been
 % clearly justified.
-The data is prepared in following steps before feeded to LightGBM and Xgboost.
+The data is prepared in following steps before fed to LightGBM and Xgboost.
 % TODO: replace with a ordered itemizer
 \begin{itemize}
-    \item Remove outliers to prevent the model to reduce generatalization due to data points not likely to
+    \item Remove outliers to prevent the model to reduce generalization due to data points not likely to
         reflect possible future data
     \item Convert types so that the data can be used in LightGBM and Xgboost
     \item Enriching the train data in file \textit{train\_2016.csv} with property data in file
@@ -196,7 +196,7 @@ The data is prepared in following steps before feeded to LightGBM and Xgboost.
 % data has been thoroughly documented. Complications that occurred during the coding process are discussed.
 The overall implementation steps are
 % TODO: replace with a ordered itemizer
-% TODO: get name for performance matric
+% TODO: get name for performance metric
 \begin{itemize}
     \item Preprocessing and train for LightGBM using train data
     \item Preprocessing and train for Xgboost using train data
@@ -206,7 +206,7 @@ The overall implementation steps are
     \item Predict \textit{logerror} for test data using Xgboost
     \item Predict final \textit{logerror} for test data weighing weighing together LightGBM, Xgboost, and the
         constant model
-    \item Compute the performance using the ?? matric
+    \item Compute the performance using the ?? metric
     \item Adjust configuration parameters for LightGBM and Xgboost and start over at the top
 \end{itemize}
 
@@ -218,8 +218,8 @@ The overall implementation steps are
 \section{Results}
 
 \subsection{Model Evaluation and Validation}
-% The final model’s qualities — such as parameters — are evaluated in detail. Some type of analysis is used
-% to validate the robustness of the model’s solution.
+% The final models qualities such as parameters are evaluated in detail. Some type of analysis is used
+% to validate the robustness of the models solution.
 
 \subsection{Justification}
 % The final results are compared to the benchmark result or threshold with some type of statistical analysis.
@@ -238,7 +238,7 @@ The overall implementation steps are
 
 \subsection{Improvement}
 % Discussion is made as to how one aspect of the implementation could be improved. Potential solutions resulting
-% from these improvements are considered and compared/contrasted to the current solution.
+% from these improvements are considered and compared / contrasted to the current solution.
 
 
 \end{document}
