@@ -26,6 +26,7 @@ def prepare_data_all():
     month = label['transactiondate'].map(lambda date: float(date[5:7]), na_action=None).to_frame()
     month.columns = ['month']
     label = pd.concat([label, month], axis=1)
+    # todo: add week day, that is monday through sunday
 
     all_df = label.merge(prop, how='left', on='parcelid')
 
@@ -52,14 +53,13 @@ def prepare_data_and_save():
 def train_lightgbm(x, y):
     split = int(round(0.995 * x.shape[0]))
     if split == x.shape[0]:
-        split = x.shape[0] - 5
+        split = x.shape[0] - 50
     x_train, y_train, x_valid, y_valid = x[:split], y[:split], x[split:], y[split:]
     x_train = x_train.values.astype(np.float32, copy=False)
     x_valid = x_valid.values.astype(np.float32, copy=False)
 
     d_train = lgb.Dataset(x_train, label=y_train)
     d_valid = lgb.Dataset(x_valid, label=y_valid)
-
     params = {
         'max_bin': 10,
         'learning_rate': 0.0021,
@@ -73,16 +73,13 @@ def train_lightgbm(x, y):
         'min_data': 500,
         'min_hessian': 0.05
     }
-
     print "\nTraining model ..."
-    clf = lgb.train(params, d_train, 400, d_valid)
-
-    return clf
+    return lgb.train(params, d_train, 400, d_valid)
 
 
 def train_xgboost(xgb_xy_train, y):
     print "\nTraining XGBoost ..."
-    xgb_params = {
+    params = {
         'eta': 0.03295,
         'max_depth': 6,
         'subsample': 0.80,
@@ -91,7 +88,7 @@ def train_xgboost(xgb_xy_train, y):
         'base_score': np.mean(y),
         'silent': 0
     }    
-    return xgb.train(dict(xgb_params), xgb_xy_train, num_boost_round=200)
+    return xgb.train(dict(params), xgb_xy_train, num_boost_round=200)
 
 
 def linear_model_x(y_lightgbm, y_xgboost):
