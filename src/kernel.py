@@ -1,14 +1,14 @@
 import numpy as np
 import pandas as pd
 import xgboost as xgb
-from sklearn.preprocessing import LabelEncoder
 import lightgbm as lgb
 from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
-from scipy.optimize import minimize
+import random
 
 random_state_seed = 42
+random.seed(random_state_seed)
 
 
 def prepare_data_all():
@@ -107,25 +107,38 @@ def train_linear_model(x_train_lm, y_train):
     return model
 
 
-def predict_y_weight(y_predict_lightgbm, y_predict_xgboost, y_predict_baseline):
-    weight_xgboost = 0.6700
-    weight_baseline = 0.0056
-    weight_lightgbm = 1 - weight_xgboost - weight_baseline
-    return y_predict_lightgbm*weight_lightgbm + y_predict_xgboost*weight_xgboost + y_predict_baseline*weight_baseline
+def predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost):
+    return weights[0]*y_predict_baseline + weights[1]*y_predict_lightgbm + weights[2]*y_predict_xgboost
 
 
-def print_mae(y_predict_lightgbm, y_predict_xgboost, y_predict_baseline, y):
+def train_for_weights(y_predict_baseline, y_predict_lightgbm, y_predict_xgboost, y):
+    print "\nTraning weights ... "
+    best_weights = [0.3, 0.3, 0.4]
+    best_mea = mean_absolute_error(y, predict_weights(best_weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost))
+    for x in range(0, 10000):
+        w0 = random.random()
+        w1 = (1 - w0)*random.random()
+        weights = [w0, w1, 1 - w0 - w1]
+        mea = mean_absolute_error(y, predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost))
+        if mea < best_mea:
+            best_mea = mea
+            best_weights = weights
+    return best_weights
+
+
+def print_mae(y_predict_baseline, y_predict_lightgbm, y_predict_xgboost, y_predict_weights, y):
     print "\nMean Absolute Error for "
     print "  Baseline: " + str(mean_absolute_error(y, y_predict_baseline))
     print "  LightGBM: " + str(mean_absolute_error(y, y_predict_lightgbm))
     print "  XGBoost:  " + str(mean_absolute_error(y, y_predict_xgboost))
+    print "  Weighted: " + str(mean_absolute_error(y, y_predict_weights))
 
 
 def train(all_df):
     x = all_df.drop(['parcelid', 'logerror', 'transactiondate'], axis=1)
     y = all_df['logerror'].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=random_state_seed)
-    y_train_mean = 0.0115 #np.mean(y_train)
+    y_train_mean = np.mean(y_train)
 
     #
     # training predictions
@@ -140,9 +153,11 @@ def train(all_df):
     xgboost_model = train_xgboost(xgb_xy_train, y_train)
     y_train_predict_xgboost = xgboost_model.predict(xgb_xy_train)
 
-    y_train_weight = predict_y_weight(y_train_predict_lightgbm, y_train_predict_xgboost, y_train_predict_baseline)
+    weights = train_for_weights(y_train_predict_baseline, y_train_predict_lightgbm, y_train_predict_xgboost, y_train)
+    print "Weights: ", weights
+    y_train_weight = predict_weights(weights, y_train_predict_baseline, y_train_predict_lightgbm, y_train_predict_xgboost)
 
-    print_mae(y_train_predict_lightgbm, y_train_predict_xgboost, y_train_weight, y_train)
+    print_mae(y_train_predict_baseline, y_train_predict_lightgbm, y_train_predict_xgboost, y_train_weight, y_train)
 
     #
     # test predictions
@@ -154,9 +169,9 @@ def train(all_df):
     xgb_xy_test = xgb.DMatrix(x_test, y_test)
     y_test_predict_xgboost = xgboost_model.predict(xgb_xy_test)
 
-    y_test_weight = predict_y_weight(y_test_predict_lightgbm, y_test_predict_xgboost, y_test_predict_baseline)
+    y_test_weight = predict_weights(weights, y_test_predict_baseline, y_test_predict_lightgbm, y_test_predict_xgboost)
 
-    print_mae(y_test_predict_lightgbm, y_test_predict_xgboost, y_test_weight, y_test)
+    print_mae(y_test_predict_baseline, y_test_predict_lightgbm, y_test_predict_xgboost, y_test_weight, y_test)
 
 
 #prepare_data_and_save()
