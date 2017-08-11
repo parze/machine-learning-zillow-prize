@@ -95,7 +95,7 @@ def predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_x
 
 
 def train_for_weights(y_predict_baseline, y_predict_lightgbm, y_predict_xgboost, y):
-    print "\nTraning weights ... "
+    print "\nTraining weights ... "
     best_weights = [0.3, 0.3, 0.4]
     best_mea = mean_absolute_error(y, predict_weights(best_weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost))
     for x in range(0, 10000):
