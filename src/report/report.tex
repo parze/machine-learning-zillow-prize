@@ -58,9 +58,10 @@ Kaggle community can improve on it creating an even better model.
 % Metrics used to measure performance of a model or result are clearly defined. Metrics are justified based on the
 % characteristics of the problem.
 %
-The metric is defined by Zillow witch is asking to predict the \textit{logerror} between their Zestimate model and the
-actual sale price, given all the features of a home. The log error is defined as
+Zillow is asking to predict the \textit{logerror} between their Zestimate model and the
+actual sale price, given all the features of a home. The \textit{logerror} is defined as
 \[ logerror = log(Zestimate) - log(SalePrice) \]
+
 % TODO: Define the actual metric to use when models are learning
 
 
@@ -159,7 +160,7 @@ show quite high correlation between features, especially between features relati
 % Algorithms and techniques used in the project are thoroughly discussed and properly justified based on
 % the characteristics of the problem.
 
-% todo
+% todo:
 % list pros and cons for LightGBM
 % list pros and cons for Xgboost
 % describe why a constant model can improve the result
@@ -178,8 +179,7 @@ can then be omitted to the public leader board of Kaggle to be compared towards 
 % input that needed to be addressed have been corrected. If no data preprocessing is necessary, it has been
 % clearly justified.
 The data is prepared in following steps before fed to LightGBM and Xgboost.
-% TODO: replace with a ordered itemizer
-\begin{itemize}
+\begin{enumerate}
     \item Remove outliers to prevent the model to reduce generalization due to data points not likely to
         reflect possible future data
     \item Convert types so that the data can be used in LightGBM and Xgboost
@@ -189,15 +189,14 @@ The data is prepared in following steps before fed to LightGBM and Xgboost.
     \item Removed columns \textit{parcelid} and \textit{transactiondate} since these will most likely not
         improve the prediction
     \item Split data into train and test
-\end{itemize}
+\end{enumerate}
 
 \subsection{Implementation}
 % The process for which metrics, algorithms, and techniques were implemented with the given datasets or input
 % data has been thoroughly documented. Complications that occurred during the coding process are discussed.
 The overall implementation steps are
-% TODO: replace with a ordered itemizer
 % TODO: get name for performance metric
-\begin{itemize}
+\begin{enumerate}
     \item Preprocessing and train for LightGBM using train data
     \item Preprocessing and train for Xgboost using train data
     \item Use linear regression to find the best weights on weighing together LightGBM, Xgboost, and the constant
@@ -208,7 +207,7 @@ The overall implementation steps are
         constant model
     \item Compute the performance using the ?? metric
     \item Adjust configuration parameters for LightGBM and Xgboost and start over at the top
-\end{itemize}
+\end{enumerate}
 
 
 \subsection{Refinement}
