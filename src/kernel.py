@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import xgboost as xgb
 import lightgbm as lgb
-from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 import random
@@ -88,20 +87,7 @@ def train_xgboost(xgb_xy_train, y):
         'base_score': np.mean(y),
         'silent': 0
     }    
-    return xgb.train(dict(params), xgb_xy_train, num_boost_round=200)
-
-
-def linear_model_x(y_lightgbm, y_xgboost):
-    return pd.DataFrame({
-        'lightgbm': y_lightgbm,
-        'xgboost': y_xgboost
-    })
-
-
-def train_linear_model(x_train_lm, y_train):
-    model = linear_model.LinearRegression()
-    model.fit(x_train_lm, y_train)
-    return model
+    return xgb.train(params, xgb_xy_train, num_boost_round=200)
 
 
 def predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost):
