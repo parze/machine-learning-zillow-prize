@@ -107,21 +107,31 @@ def train_linear_model(x_train_lm, y_train):
     return model
 
 
-def print_mae(y_predict_lightgbm, y_predict_xgboost, y_predict_linear_model, y):
-    print "Mean Absolute Error for LightGBM: " + str(mean_absolute_error(y, y_predict_lightgbm))
-    print "Mean Absolute Error for XGBoost: " + str(mean_absolute_error(y, y_predict_xgboost))
-    print "Mean Absolute Error for Linear model: " + str(mean_absolute_error(y, y_predict_linear_model))
+def predict_y_weight(y_predict_lightgbm, y_predict_xgboost, y_predict_baseline):
+    weight_xgboost = 0.6700
+    weight_baseline = 0.0056
+    weight_lightgbm = 1 - weight_xgboost - weight_baseline
+    return y_predict_lightgbm*weight_lightgbm + y_predict_xgboost*weight_xgboost + y_predict_baseline*weight_baseline
+
+
+def print_mae(y_predict_lightgbm, y_predict_xgboost, y_predict_baseline, y):
+    print "\nMean Absolute Error for "
+    print "  Baseline: " + str(mean_absolute_error(y, y_predict_baseline))
+    print "  LightGBM: " + str(mean_absolute_error(y, y_predict_lightgbm))
+    print "  XGBoost:  " + str(mean_absolute_error(y, y_predict_xgboost))
 
 
 def train(all_df):
     x = all_df.drop(['parcelid', 'logerror', 'transactiondate'], axis=1)
     y = all_df['logerror'].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=random_state_seed)
+    y_train_mean = 0.0115 #np.mean(y_train)
 
-    y_train_mean = np.mean(y_train)
-    y_priect_baseline = np.ones(len(y_train))*y_train_mean
-    print y_train_mean
-    print y_priect_baseline
+    #
+    # training predictions
+    #
+
+    y_train_predict_baseline = np.ones(len(y_train))*y_train_mean
 
     lightgbm_model = train_lightgbm(x_train, y_train)
     y_train_predict_lightgbm = lightgbm_model.predict(x_train)
@@ -130,67 +140,31 @@ def train(all_df):
     xgboost_model = train_xgboost(xgb_xy_train, y_train)
     y_train_predict_xgboost = xgboost_model.predict(xgb_xy_train)
 
-    x_train_lm = linear_model_x(y_train_predict_lightgbm, y_train_predict_xgboost)
-    linear_model = train_linear_model(x_train_lm, y_train)
-    y_train_predict_linear_model = linear_model.predict(x_train_lm)
-    print 'Coefficients:', linear_model.coef_
+    y_train_weight = predict_y_weight(y_train_predict_lightgbm, y_train_predict_xgboost, y_train_predict_baseline)
 
-    print_mae(y_train_predict_lightgbm, y_train_predict_xgboost, y_train_predict_linear_model, y_train)
+    print_mae(y_train_predict_lightgbm, y_train_predict_xgboost, y_train_weight, y_train)
+
+    #
+    # test predictions
+    #
+
+    y_test_predict_baseline = np.ones(len(y_test))*y_train_mean
 
     y_test_predict_lightgbm = lightgbm_model.predict(x_test)
     xgb_xy_test = xgb.DMatrix(x_test, y_test)
     y_test_predict_xgboost = xgboost_model.predict(xgb_xy_test)
-    x_test_lm = linear_model_x(y_test_predict_lightgbm, y_test_predict_xgboost)
-    y_test_predict_linear_model = linear_model.predict(x_test_lm)
 
-    print_mae(y_test_predict_lightgbm, y_test_predict_xgboost, y_test_predict_linear_model, y_test)
+    y_test_weight = predict_y_weight(y_test_predict_lightgbm, y_test_predict_xgboost, y_test_predict_baseline)
 
-
-def lab():
-    all_df=pd.read_csv('../data/all_df.csv')
-    x = all_df.drop(['parcelid', 'logerror', 'transactiondate'], axis=1)
-    y = all_df['logerror'].values
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=random_state_seed)
-
-    y_train_mean = np.mean(y)
-    y_predict_baseline = np.ones(len(y_train))*y_train_mean
-    print y_train_mean
-    print y_predict_baseline
-
-    y_test_predict_xgboost = y_train+0.001
-
-
-#def weigh(weights):
-#    y_pred =
-
-
-
+    print_mae(y_test_predict_lightgbm, y_test_predict_xgboost, y_test_weight, y_test)
 
 
 #prepare_data_and_save()
 
 #train(prepare_data_all())
 
-#train(all_df=pd.read_csv('../data/all_df.csv'))
+train(all_df=pd.read_csv('../data/all_df.csv'))
 
-#lab()
-
-
-# Parameters
-XGB_WEIGHT = 0.6700
-BASELINE_WEIGHT = 0.0056
-OLS_WEIGHT = 0.0550
-
-XGB1_WEIGHT = 0.8083  # Weight of first in combination of two XGB models
-
-
-
-lgb_weight = (1 - XGB_WEIGHT - BASELINE_WEIGHT) / (1 - OLS_WEIGHT)
-xgb_weight0 = XGB_WEIGHT / (1 - OLS_WEIGHT)
-baseline_weight0 =  BASELINE_WEIGHT / (1 - OLS_WEIGHT)
-print xgb_weight0 + baseline_weight0 + lgb_weight
-
-print 1.0/(1 - OLS_WEIGHT)
 
 
 
