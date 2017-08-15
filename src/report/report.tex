@@ -61,8 +61,8 @@ Kaggle community can improve on it creating an even better model.
 Zillow is asking to predict the \textit{logerror} between their Zestimate model and the
 actual sale price, given all the features of a home. The \textit{logerror} is defined as
 \[ logerror = log(Zestimate) - log(SalePrice) \]
-
-% TODO: Define the actual metric to use when models are learning
+Mean Absolute Error is then used as the metric on the logerror individually for Baseline, LightGBM, XGBoost as well
+as the weighted result.
 
 
 \section{Analysis}
@@ -159,12 +159,24 @@ show quite high correlation between features, especially between features relati
 \subsection{Algorithms and Techniques}
 % Algorithms and techniques used in the project are thoroughly discussed and properly justified based on
 % the characteristics of the problem.
-
-% todo:
-% list pros and cons for LightGBM
-% list pros and cons for Xgboost
-% describe why a constant model can improve the result
-% describe why it is good to weight the result
+I have selected the approche of weighing the result of following three different alogorithm.
+\begin{enumerate}
+    \item
+        \textit{Baseline} which is the simple prediction of predicting all by the mean of the training data.
+        The logerror seems to follow the normal distribution and this is the mean that we are after and is estimated
+        by the mean of the training data.
+    \item
+        \textit{LightGBM} is a gradient boosting framework that uses tree based learning algorithms. It is a
+        high speed, high accuracy, and large scale data libary.
+    \item
+        \textit{XGBoost} implmements the gradiant boosting tree based model as well. The libery is omtimized to
+        be a scalable, portable and accurate library.
+\end{enumerate}
+LightGBM and XGBoost will be able to handle the large data set at hand. They are battle proven and have been used to
+win a lot of machine learaning contests. Gradiant boosting trees are prone to overfit so extra caution must be
+taken tuning parameters. The result from these three models will then be weighted accoring to the best weights
+found using the training set. Often the result of weiging the result from different models creates a better result
+then any of the models by them self.
 
 \subsection{Benchmark}
 % Student clearly defines a benchmark result or threshold for comparing performances of solutions obtained.
@@ -178,11 +190,11 @@ can then be omitted to the public leader board of Kaggle to be compared towards 
 % All preprocessing steps have been clearly documented. Abnormalities or characteristics about the data or
 % input that needed to be addressed have been corrected. If no data preprocessing is necessary, it has been
 % clearly justified.
-The data is prepared in following steps before fed to LightGBM and Xgboost.
+The data is prepared in following steps before fed to LightGBM and XGBoost.
 \begin{enumerate}
     \item Remove outliers to prevent the model to reduce generalization due to data points not likely to
         reflect possible future data
-    \item Convert types so that the data can be used in LightGBM and Xgboost
+    \item Convert types so that the data can be used in LightGBM and XGBoost
     \item Enriching the train data in file \textit{train\_2016.csv} with property data in file
         \textit{properties\_2016.csv} by joining on \textit{parcelid}
     \item Adding the month of the transaction as a feature
@@ -198,15 +210,15 @@ The overall implementation steps are
 % TODO: get name for performance metric
 \begin{enumerate}
     \item Preprocessing and train for LightGBM using train data
-    \item Preprocessing and train for Xgboost using train data
-    \item Use linear regression to find the best weights on weighing together LightGBM, Xgboost, and the constant
+    \item Preprocessing and train for XGBoost using train data
+    \item Use linear regression to find the best weights on weighing together LightGBM, XGBoost, and the constant
         model using the train data
     \item Predict \textit{logerror} for test data using LightGBM
-    \item Predict \textit{logerror} for test data using Xgboost
-    \item Predict final \textit{logerror} for test data weighing weighing together LightGBM, Xgboost, and the
+    \item Predict \textit{logerror} for test data using XGBoost
+    \item Predict final \textit{logerror} for test data weighing weighing together LightGBM, XGBoost, and the
         constant model
     \item Compute the performance using the ?? metric
-    \item Adjust configuration parameters for LightGBM and Xgboost and start over at the top
+    \item Adjust configuration parameters for LightGBM and XGBoost and start over at the top
 \end{enumerate}
 
 
