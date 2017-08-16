@@ -61,7 +61,7 @@ Kaggle community can improve on it creating an even better model.
 Zillow is asking to predict the \textit{logerror} between their Zestimate model and the
 actual sale price, given all the features of a home. The \textit{logerror} is defined as
 \[ logerror = log(Zestimate) - log(SalePrice) \]
-Mean Absolute Error is then used as the metric on the logerror individually for Baseline, LightGBM, XGBoost as well
+\textit{Mean Absolute Error} is then used as the metric on the logerror individually for Baseline, LightGBM, XGBoost as well
 as the weighted result.
 
 
@@ -123,6 +123,7 @@ transactions per month while dropping to under 2000 in November to December.
 \subsubsection{Properties}
 Property data file \textit{properties\_2016.csv} is a lot larger with 2985217 rows and 58 columns describing home
 features. It seems like some of the columns contain less information in the form of NaN values.
+% TODO: image close to text
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{./img/prop-nan.png}
@@ -154,6 +155,8 @@ If we look at features with a correlation less than -0.01 and more than 0.02 we 
 correlation between these features might indicate that they contain the same type of information which most
 likely makes prediction harder than if little correlation exists. Looking at Figure \ref{fig:prop-corr-feature}
 show quite high correlation between features, especially between features relating to room counts and house size.
+
+% TODO: add no pattern for major features
 
 
 \subsection{Algorithms and Techniques}
@@ -207,7 +210,6 @@ The data is prepared in following steps before fed to LightGBM and XGBoost.
 % The process for which metrics, algorithms, and techniques were implemented with the given datasets or input
 % data has been thoroughly documented. Complications that occurred during the coding process are discussed.
 The overall implementation steps are
-% TODO: get name for performance metric
 \begin{enumerate}
     \item Preprocessing and train for LightGBM using train data
     \item Preprocessing and train for XGBoost using train data
@@ -217,7 +219,7 @@ The overall implementation steps are
     \item Predict \textit{logerror} for test data using XGBoost
     \item Predict final \textit{logerror} for test data weighing weighing together LightGBM, XGBoost, and the
         constant model
-    \item Compute the performance using the ?? metric
+    \item Compute the performance using the Mean Absolute Error metric
     \item Adjust configuration parameters for LightGBM and XGBoost and start over at the top
 \end{enumerate}
 
