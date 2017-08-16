@@ -65,7 +65,6 @@ def train_lightgbm(x, y):
         'objective': 'regression',
         'metric': 'l1',
         'num_leaves': 512,
-        'min_data': 500,
         'min_hessian': 0.05
     }
     print "\nTraining model ..."
@@ -92,12 +91,14 @@ def predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_x
 
 def train_for_weights(y_predict_baseline, y_predict_lightgbm, y_predict_xgboost, y):
     print "\nTraining weights ... "
-    best_weights = [0.3, 0.3, 0.4]
+    random.seed(random_state_seed)
+    best_weights = [0.4, 0.3, 0.3]
     best_mea = mean_absolute_error(y, predict_weights(best_weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost))
     for x in range(0, 10000):
         w0 = random.random()
-        w1 = (1 - w0)*random.random()
-        weights = [w0, w1, 1 - w0 - w1]
+        w1 = (0.8 - w0)*random.random() + 0.1
+        w2 = 1 - w0 - w1
+        weights = [w0, w1, w2]
         mea = mean_absolute_error(y, predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost))
         if mea < best_mea:
             best_mea = mea
