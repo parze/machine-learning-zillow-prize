@@ -64,7 +64,6 @@ def train_lightgbm(x, y):
         'boosting_type': 'gbdt',
         'objective': 'regression',
         'metric': 'l1',
-        'bagging_freq': 40,
         'num_leaves': 512,
         'min_data': 500,
         'min_hessian': 0.05
