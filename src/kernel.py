@@ -64,8 +64,7 @@ def train_lightgbm(x, y):
         'boosting_type': 'gbdt',
         'objective': 'regression',
         'metric': 'l1',
-        'num_leaves': 512,
-        'min_hessian': 0.05
+        'num_leaves': 512
     }
     print "\nTraining model ..."
     return lgb.train(params, d_train, 400, d_valid)
