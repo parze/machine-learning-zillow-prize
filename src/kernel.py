@@ -81,7 +81,7 @@ def train_xgboost(xgb_xy_train, y):
         'max_depth': 8,
         'subsample': 0.80
     }    
-    return xgb.train(params, xgb_xy_train, num_boost_round=200)
+    return xgb.train(params, xgb_xy_train, num_boost_round=150)
 
 
 def predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost):
