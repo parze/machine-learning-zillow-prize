@@ -60,10 +60,10 @@ def train_lightgbm(x, y):
     d_train = lgb.Dataset(x_train, label=y_train)
     d_valid = lgb.Dataset(x_valid, label=y_valid)
     params = {
-        'learning_rate': 0.0021,
         'boosting_type': 'gbdt',
         'objective': 'regression',
         'metric': 'l1',
+        'learning_rate': 0.0021,
         'num_leaves': 512
     }
     print "\nTraining model ..."
