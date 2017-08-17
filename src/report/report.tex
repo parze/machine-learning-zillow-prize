@@ -227,18 +227,31 @@ The overall implementation steps are
 \subsection{Refinement}
 % The process of improving upon the algorithms and techniques used is clearly documented. Both the initial and
 % final solutions are reported, along with intermediate solutions, if necessary.
-\subsubsection{LightGBM}
+Major parameters for both models where tuned through the steps of changing one paremeter at a time to different
+values while reruning the prediction and see if the train and test data result improved. In case of
 \begin{enumerate}
-    \item Turned down learning rate learning_rate to mitigate overfittning
-
+    \item neither train result nor test result improved indicates that the change made the model worse
+        and the change was reverted
+    \item train result improved but the test result did not indicates that the change made the model overfit
+        and the change was reverted
+    \item train result and the test result improved indicates that the change made the model generalize better and
+        the change was keept
 \end{enumerate}
 
+Following improvments were made per model.
+\subsubsection{LightGBM}
+\begin{enumerate}
+    \item Changed learning rate from default value of 0.1 to 0.0021 which mitigated overfittning
+    \item Changed number of leaves in one tree from default value of 31 to 512 which improved result
+\end{enumerate}
+\subsubsection{XGBoost}
+\begin{enumerate}
+    \item Changed the step size shrinkage (eta) from default value of 0.3 to 0.03295 which mitigated overfittning
+    \item Changed the maximum depth of a tree from default value of 6 to 8 which improved the model
+        without overfittning it by increaseing complexity
+    \item Changed the subsample ratio from default value of 1 to 0.8 which mitigated overfittning
+\end{enumerate}
 
-
-
-
-max_bin
-min_hessian
 
 \section{Results}
 
