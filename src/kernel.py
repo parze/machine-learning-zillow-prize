@@ -73,13 +73,13 @@ def train_lightgbm(x, y):
 def train_xgboost(xgb_xy_train, y):
     print "\nTraining XGBoost ..."
     params = {
-        'eta': 0.03295,
-        'max_depth': 8,
-        'subsample': 0.80,
         'objective': 'reg:linear',
         'eval_metric': 'mae',
         'base_score': np.mean(y),
-        'silent': 0
+        'silent': 0,
+        'eta': 0.03295,
+        'max_depth': 8,
+        'subsample': 0.80
     }    
     return xgb.train(params, xgb_xy_train, num_boost_round=200)
 
