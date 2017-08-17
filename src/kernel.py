@@ -67,14 +67,14 @@ def train_lightgbm(x, y):
         'num_leaves': 512
     }
     print "\nTraining model ..."
-    return lgb.train(params, d_train, 400, d_valid)
+    return lgb.train(params, d_train, 5, d_valid)
 
 
 def train_xgboost(xgb_xy_train, y):
     print "\nTraining XGBoost ..."
     params = {
         'eta': 0.03295,
-        'max_depth': 6,
+        'max_depth': 8,
         'subsample': 0.80,
         'objective': 'reg:linear',
         'eval_metric': 'mae',
