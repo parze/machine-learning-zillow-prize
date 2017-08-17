@@ -67,7 +67,7 @@ def train_lightgbm(x, y):
         'num_leaves': 512
     }
     print "\nTraining model ..."
-    return lgb.train(params, d_train, 5, d_valid)
+    return lgb.train(params, d_train, 400, d_valid)
 
 
 def train_xgboost(xgb_xy_train, y):
