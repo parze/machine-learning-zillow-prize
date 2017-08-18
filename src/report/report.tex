@@ -165,7 +165,7 @@ show quite high correlation between features, especially between features relati
 \subsection{Algorithms and Techniques}
 % Algorithms and techniques used in the project are thoroughly discussed and properly justified based on
 % the characteristics of the problem.
-I have selected the approche of weighing the result of following three different alogorithm.
+I have selected the approach of weighing the result of following three different algorithm.
 \begin{itemize}
     \item
         \textit{Baseline} which is the simple prediction of predicting all by the mean of the training data.
@@ -173,15 +173,15 @@ I have selected the approche of weighing the result of following three different
         by the mean of the training data.
     \item
         \textit{LightGBM} is a gradient boosting framework that uses tree based learning algorithms. It is a
-        high speed, high accuracy, and large scale data libary.
+        high speed, high accuracy, and large scale data library.
     \item
-        \textit{XGBoost} implmements the gradiant boosting tree based model as well. The libery is omtimized to
+        \textit{XGBoost} implements the gradient boosting tree based model as well. The library is optimized to
         be a scalable, portable and accurate library.
 \end{itemize}
 LightGBM and XGBoost will be able to handle the large data set at hand. They are battle proven and have been used to
-win a lot of machine learaning contests. Gradiant boosting trees are prone to overfit so extra caution must be
-taken tuning parameters. The result from these three models will then be weighted accoring to the best weights
-found using the training set. Often the result of weiging the result from different models creates a better result
+win a lot of machine learning contests. Gradient boosting trees are prone to overfit so extra caution must be
+taken tuning parameters. The result from these three models will then be weighted according to the best weights
+found using the training set. Often the result of weighing the result from different models creates a better result
 then any of the models by them self.
 
 \subsection{Benchmark}
@@ -231,29 +231,29 @@ The overall implementation steps are
 \subsection{Refinement}
 % The process of improving upon the algorithms and techniques used is clearly documented. Both the initial and
 % final solutions are reported, along with intermediate solutions, if necessary.
-Major parameters for both models where tuned through the steps of changing one paremeter at a time to different
-values while reruning the prediction and see if the train and test data result improved. In case of
+Major parameters for both models where tuned through the steps of changing one parameter at a time to different
+values while rerunning the prediction and see if the train and test data result improved. In case of
 \begin{enumerate}
     \item neither train result nor test result improved indicates that the change made made the model worse
         and the change was reverted
     \item train result improved but the test result become worse indicates that the change made made the model overfit
         and the change was reverted
     \item train result and the test result improved indicates that the change made the model generalize better and
-        the change was keept
+        the change was kept
 \end{enumerate}
 
-Following improvments were made per model.
+Following improvements were made per model.
 \subsubsection{LightGBM}
 \begin{itemize}
-    \item Changed learning rate from default value of 0.1 to 0.0021 which mitigated overfittning
+    \item Changed learning rate from default value of 0.1 to 0.0021 which mitigated overfitting
     \item Changed number of leaves in one tree from default value of 31 to 512 which improved result
 \end{itemize}
 \subsubsection{XGBoost}
 \begin{itemize}
-    \item Changed the step size shrinkage (eta) from default value of 0.3 to 0.03295 which mitigated overfittning
+    \item Changed the step size shrinkage (eta) from default value of 0.3 to 0.03295 which mitigated overfitting
     \item Changed the maximum depth of a tree from default value of 6 to 8 which improved the model
-        without overfittning it by increaseing complexity
-    \item Changed the subsample ratio from default value of 1 to 0.8 which mitigated overfittning
+        without overfitting it by increasing complexity
+    \item Changed the subsample ratio from default value of 1 to 0.8 which mitigated overfitting
 \end{itemize}
 
 
@@ -292,10 +292,10 @@ Mean Absolute Error and Weights for the \textbf{test} data was
 % solved the problem.
 
 Parameters been tuned individually and care been taken to not overfit looking at the Mean Absolute Error for
-traning as well test data.
+training as well test data.
 
 Changing the \textit{random state seed} will pick a different train set, pick a different test set, and train models
-using different entrophy. Following are the seeds and errors from the different models.
+using different entropy. Following are the seeds and errors from the different models.
 \begin{center}
 \begin{tabular}{ l l l l l l l }
     \textbf{Seed} & \textbf{Zero} & \textbf{Baseline} & \textbf{LightGBM} & \textbf{XGBoost} & \textbf{Weighted} & \textbf{Diff} \\
@@ -305,9 +305,9 @@ using different entrophy. Following are the seeds and errors from the different 
     45 & 0.053565 & 0.053414 & 0.052846 & 0.052689 & 0.052660 & 0.000905 \\
 \end{tabular}
 \end{center}
-The differens between Benchmark/Zero model and the Weighted model result seems to stay steady above
+The difference between Benchmark/Zero model and the Weighted model result seems to stay steady above
 \textbf{0.000797}. This indicates that the Weighted model can find and use some information in the data to
-make a better prediction than just a simple zero approche. That said, it is still a lot longer way down
+make a better prediction than just a simple zero approach. That said, it is still a lot longer way down
 to zero which means that there a lot of room for improvement.
 
 \section{Conclusion}
@@ -318,7 +318,7 @@ It could be possible to tune the Weighted model some more but I think that it wo
 To make major improvements, new information is needed.
 
 Interesting observation is that the weighing the predictions the Baseline, LightGBM, and XGBoost generates a
-better overall MAE then for eny individual model.
+better overall MAE then for any individual model.
 
 
 %\subsection{Free-Form Visualization}
