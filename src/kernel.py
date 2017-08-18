@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 import random
 
-random_state_seed = 42
+random_state_seed = 44
 random.seed(random_state_seed)
 
 
@@ -106,7 +106,12 @@ def train_for_weights(y_predict_baseline, y_predict_lightgbm, y_predict_xgboost,
 
 
 def print_mae(y_predict_baseline, y_predict_lightgbm, y_predict_xgboost, y_predict_weights, y):
-    print "\nMean Absolute Error for "
+    print '\n'
+    print "Normal distribution of y"
+    print '  y mean: ' + str(np.mean(y))
+    print '  y standard deviation: ' + str(np.std(y))
+    print "Mean Absolute Error for "
+    print "  Zero:     " + str(mean_absolute_error(y, np.zeros(len(y))))
     print "  Baseline: " + str(mean_absolute_error(y, y_predict_baseline))
     print "  LightGBM: " + str(mean_absolute_error(y, y_predict_lightgbm))
     print "  XGBoost:  " + str(mean_absolute_error(y, y_predict_xgboost))

@@ -158,12 +158,15 @@ show quite high correlation between features, especially between features relati
 
 % TODO: add no pattern for major features
 
+% TODO: will be a hard problem to predict
+
+
 
 \subsection{Algorithms and Techniques}
 % Algorithms and techniques used in the project are thoroughly discussed and properly justified based on
 % the characteristics of the problem.
 I have selected the approche of weighing the result of following three different alogorithm.
-\begin{enumerate}
+\begin{itemize}
     \item
         \textit{Baseline} which is the simple prediction of predicting all by the mean of the training data.
         The logerror seems to follow the normal distribution and this is the mean that we are after and is estimated
@@ -174,7 +177,7 @@ I have selected the approche of weighing the result of following three different
     \item
         \textit{XGBoost} implmements the gradiant boosting tree based model as well. The libery is omtimized to
         be a scalable, portable and accurate library.
-\end{enumerate}
+\end{itemize}
 LightGBM and XGBoost will be able to handle the large data set at hand. They are battle proven and have been used to
 win a lot of machine learaning contests. Gradiant boosting trees are prone to overfit so extra caution must be
 taken tuning parameters. The result from these three models will then be weighted accoring to the best weights
@@ -183,9 +186,10 @@ then any of the models by them self.
 
 \subsection{Benchmark}
 % Student clearly defines a benchmark result or threshold for comparing performances of solutions obtained.
-As a benchmark, the result will be compared with the \textit{Baseline} which is an extremely simple model to
-understand. Good candidates can then be omitted to the public leader board of Kaggle to be compared towards
-other team models.
+The closer to zero the \textit{Mean Absolute Error} metric is, the better the model performance. The model result
+will also be compared with the \textit{Zero model} which is the simple model of predicting the logerror
+to always be zero independent of feature values. The error metric of the Zero model is used as an upper level.
+
 
 \section{Methodology}
 
@@ -213,12 +217,12 @@ The overall implementation steps are
 \begin{enumerate}
     \item Preprocessing and train for LightGBM using train data
     \item Preprocessing and train for XGBoost using train data
-    \item Use linear regression to find the best weights on weighing together LightGBM, XGBoost, and the constant
-        model using the train data
+    \item Find the best weights for the tree models by randomly trying different values on the train result
+        from above. I selected a minimum weight of 0.1 for the LightGBM and XGboost models.
     \item Predict \textit{logerror} for test data using LightGBM
     \item Predict \textit{logerror} for test data using XGBoost
-    \item Predict final \textit{logerror} for test data weighing weighing together LightGBM, XGBoost, and the
-        constant model
+    \item Predict final \textit{logerror} for test data weighing together LightGBM, XGBoost, and the
+        constant model using the weights from above.
     \item Compute the performance using the Mean Absolute Error metric
     \item Adjust configuration parameters for LightGBM and XGBoost and start over at the top
 \end{enumerate}
@@ -230,9 +234,9 @@ The overall implementation steps are
 Major parameters for both models where tuned through the steps of changing one paremeter at a time to different
 values while reruning the prediction and see if the train and test data result improved. In case of
 \begin{enumerate}
-    \item neither train result nor test result improved indicates that the change made the model worse
+    \item neither train result nor test result improved indicates that the change made made the model worse
         and the change was reverted
-    \item train result improved but the test result did not indicates that the change made the model overfit
+    \item train result improved but the test result become worse indicates that the change made made the model overfit
         and the change was reverted
     \item train result and the test result improved indicates that the change made the model generalize better and
         the change was keept
@@ -240,43 +244,100 @@ values while reruning the prediction and see if the train and test data result i
 
 Following improvments were made per model.
 \subsubsection{LightGBM}
-\begin{enumerate}
+\begin{itemize}
     \item Changed learning rate from default value of 0.1 to 0.0021 which mitigated overfittning
     \item Changed number of leaves in one tree from default value of 31 to 512 which improved result
-\end{enumerate}
+\end{itemize}
 \subsubsection{XGBoost}
-\begin{enumerate}
+\begin{itemize}
     \item Changed the step size shrinkage (eta) from default value of 0.3 to 0.03295 which mitigated overfittning
     \item Changed the maximum depth of a tree from default value of 6 to 8 which improved the model
         without overfittning it by increaseing complexity
     \item Changed the subsample ratio from default value of 1 to 0.8 which mitigated overfittning
-\end{enumerate}
+\end{itemize}
 
 
 \section{Results}
 
-\subsection{Model Evaluation and Validation}
+\subsection{Mean Absolute Errors}
+Mean Absolute Error and Weights for the \textbf{training} data was
+\begin{center}
+\begin{tabular}{ l l l }
+    \textbf{Model} & \textbf{Error} & \textbf{Weights} \\
+    Baseline & 0.053027 & 0.002130 \\
+    LightGBM & 0.049524 & 0.104294 \\
+    XGBoost  & 0.048911 & 0.893574 \\
+    Weighted & 0.048946 & \\
+\end{tabular}
+\end{center}
+
+Mean Absolute Error and Weights for the \textbf{test} data was
+\begin{center}
+\begin{tabular}{ l l }
+    \textbf{Model} & \textbf{Error} \\
+    Baseline & 0.053806  \\
+    LightGBM & 0.053157  \\
+    XGBoost  & 0.053021  \\
+    Weighted & 0.052987  \\
+\end{tabular}
+\end{center}
+
+
+\subsection{Model Evaluation, Validation, and Justification}
 % The final models qualities such as parameters are evaluated in detail. Some type of analysis is used
 % to validate the robustness of the models solution.
 
-\subsection{Justification}
 % The final results are compared to the benchmark result or threshold with some type of statistical analysis.
 % Justification is made as to whether the final model and solution is significant enough to have adequately
 % solved the problem.
 
-\section{Conclusion}
+Parameters been tuned individually and care been taken to not overfit looking at the Mean Absolute Error for
+traning as well test data.
 
-\subsection{Free-Form Visualization}
+Changing the \textit{random state seed} will pick a different train set, pick a different test set, and train models
+using different entrophy. Following are the seeds and errors from the different models.
+\begin{center}
+\begin{tabular}{ l l l l l l l }
+    \textbf{Seed} & \textbf{Zero} & \textbf{Baseline} & \textbf{LightGBM} & \textbf{XGBoost} & \textbf{Weighted} & \textbf{Diff} \\
+    42 & 0.053989 & 0.053806 & 0.052987 & 0.053157 & 0.053021 & 0.000968 \\
+    43 & 0.053258 & 0.053010 & 0.052441 & 0.052355 & 0.052313 & 0.000945 \\
+    44 & 0.052686 & 0.052544 & 0.051925 & 0.051949 & 0.051889 & 0.000797 \\
+    45 & 0.053565 & 0.053414 & 0.052846 & 0.052689 & 0.052660 & 0.000905 \\
+\end{tabular}
+\end{center}
+The differens between Benchmark/Zero model and the Weighted model result seems to stay steady above
+\textbf{0.000797}. This indicates that the Weighted model can find and use some information in the data to
+make a better prediction than just a simple zero approche. That said, it is still a lot longer way down
+to zero which means that there a lot of room for improvement.
+
+\section{Conclusion}
+Zestimate algorithm used by Zillow is doing a good job. The correlation between the logerror and
+different features are low (Figure \ref{fig:prop-corr-feature}) and even if the Weighted model is utilizing
+some of the little information that exists to improve the result towards zero and away from the Zero model.
+It could be possible to tune the Weighted model some more but I think that it would not give much result.
+To make major improvements, new information is needed.
+
+Interesting observation is that the weighing the predictions the Baseline, LightGBM, and XGBoost generates a
+better overall MAE then for eny individual model.
+
+
+%\subsection{Free-Form Visualization}
 % A visualization has been provided that emphasizes an important quality about the project with thorough discussion.
 % Visual cues are clearly defined.
 
-\subsection{Reflection}
+%\subsection{Reflection}
 % Student adequately summarizes the end-to-end problem solution and discusses one or two particular aspects of
 % the project they found interesting or difficult.
 
 \subsection{Improvement}
 % Discussion is made as to how one aspect of the implementation could be improved. Potential solutions resulting
 % from these improvements are considered and compared / contrasted to the current solution.
+Adding more models could improve the result, but most likely not with much. Continue tuning parameters might
+improve the result some more, but most likely not with much.
+
+Adding more information is probably a better approche. Using the transaction date to extract the day of the
+week would add information that is currently hidden. Longitude and latitude could also be used to compute
+distances to attractive locations like the sea or bigger cities.
 
 
 \end{document}
