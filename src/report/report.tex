@@ -61,7 +61,7 @@ Kaggle community can improve on it creating an even better model.
 Zillow is asking to predict the \textit{logerror} between their Zestimate model and the
 actual sale price, given all the features of a home. The \textit{logerror} is defined as
 \[ logerror = log(Zestimate) - log(SalePrice) \]
-\textit{Mean Absolute Error} is then used as the metric on the logerror individually for Baseline, LightGBM, XGBoost as well
+\textit{Mean Absolute Error} is then used as the metric on the logerror individually for Mean, LightGBM, XGBoost as well
 as the weighted result.
 
 
@@ -168,7 +168,7 @@ show quite high correlation between features, especially between features relati
 I have selected the approach of weighing the result of following three different algorithm.
 \begin{itemize}
     \item
-        \textit{Baseline} which is the simple prediction of predicting all by the mean of the training data.
+        \textit{Mean} which is the simple prediction of predicting all by the mean of the training data.
         The logerror seems to follow the normal distribution and this is the mean that we are after and is estimated
         by the mean of the training data.
     \item
@@ -264,7 +264,7 @@ Mean Absolute Error and Weights for the \textbf{training} data was
 \begin{center}
 \begin{tabular}{ l l l }
     \textbf{Model} & \textbf{Error} & \textbf{Weights} \\
-    Baseline & 0.053027 & 0.002130 \\
+    Mean & 0.053027 & 0.002130 \\
     LightGBM & 0.049524 & 0.104294 \\
     XGBoost  & 0.048911 & 0.893574 \\
     Weighted & 0.048946 & \\
@@ -275,7 +275,7 @@ Mean Absolute Error and Weights for the \textbf{test} data was
 \begin{center}
 \begin{tabular}{ l l }
     \textbf{Model} & \textbf{Error} \\
-    Baseline & 0.053806  \\
+    Mean & 0.053806  \\
     LightGBM & 0.053157  \\
     XGBoost  & 0.053021  \\
     Weighted & 0.052987  \\
@@ -298,7 +298,7 @@ Changing the \textit{random state seed} will pick a different train set, pick a 
 using different entropy. Following are the seeds and errors from the different models.
 \begin{center}
 \begin{tabular}{ l l l l l l l }
-    \textbf{Seed} & \textbf{Zero} & \textbf{Baseline} & \textbf{LightGBM} & \textbf{XGBoost} & \textbf{Weighted} & \textbf{Diff} \\
+    \textbf{Seed} & \textbf{Zero} & \textbf{Mean} & \textbf{LightGBM} & \textbf{XGBoost} & \textbf{Weighted} & \textbf{Diff} \\
     42 & 0.053989 & 0.053806 & 0.052987 & 0.053157 & 0.053021 & 0.000968 \\
     43 & 0.053258 & 0.053010 & 0.052441 & 0.052355 & 0.052313 & 0.000945 \\
     44 & 0.052686 & 0.052544 & 0.051925 & 0.051949 & 0.051889 & 0.000797 \\
@@ -317,7 +317,7 @@ some of the little information that exists to improve the result towards zero an
 It could be possible to tune the Weighted model some more but I think that it would not give much result.
 To make major improvements, new information is needed.
 
-Interesting observation is that the weighing the predictions the Baseline, LightGBM, and XGBoost generates a
+Interesting observation is that the weighing the predictions the Mean, LightGBM, and XGBoost generates a
 better overall MAE then for any individual model.
 
 

@@ -84,35 +84,35 @@ def train_xgboost(xgb_xy_train, y):
     return xgb.train(params, xgb_xy_train, num_boost_round=150)
 
 
-def predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost):
-    return weights[0]*y_predict_baseline + weights[1]*y_predict_lightgbm + weights[2]*y_predict_xgboost
+def predict_weights(weights, y_predict_mean, y_predict_lightgbm, y_predict_xgboost):
+    return weights[0]*y_predict_mean + weights[1]*y_predict_lightgbm + weights[2]*y_predict_xgboost
 
 
-def train_for_weights(y_predict_baseline, y_predict_lightgbm, y_predict_xgboost, y):
+def train_for_weights(y_predict_mean, y_predict_lightgbm, y_predict_xgboost, y):
     print "\nTraining weights ... "
     random.seed(random_state_seed)
     best_weights = [0.4, 0.3, 0.3]
-    best_mea = mean_absolute_error(y, predict_weights(best_weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost))
+    best_mea = mean_absolute_error(y, predict_weights(best_weights, y_predict_mean, y_predict_lightgbm, y_predict_xgboost))
     for x in range(0, 10000):
         w0 = random.random()
         w1 = (0.8 - w0)*random.random() + 0.1
         w2 = 1 - w0 - w1
         weights = [w0, w1, w2]
-        mea = mean_absolute_error(y, predict_weights(weights, y_predict_baseline, y_predict_lightgbm, y_predict_xgboost))
+        mea = mean_absolute_error(y, predict_weights(weights, y_predict_mean, y_predict_lightgbm, y_predict_xgboost))
         if mea < best_mea:
             best_mea = mea
             best_weights = weights
     return best_weights
 
 
-def print_mae(y_predict_baseline, y_predict_lightgbm, y_predict_xgboost, y_predict_weights, y):
+def print_mae(y_predict_mean, y_predict_lightgbm, y_predict_xgboost, y_predict_weights, y):
     print '\n'
     print "Normal distribution of y"
     print '  y mean: ' + str(np.mean(y))
     print '  y standard deviation: ' + str(np.std(y))
     print "Mean Absolute Error for "
     print "  Zero:     " + str(mean_absolute_error(y, np.zeros(len(y))))
-    print "  Baseline: " + str(mean_absolute_error(y, y_predict_baseline))
+    print "  Mean:     " + str(mean_absolute_error(y, y_predict_mean))
     print "  LightGBM: " + str(mean_absolute_error(y, y_predict_lightgbm))
     print "  XGBoost:  " + str(mean_absolute_error(y, y_predict_xgboost))
     print "  Weighted: " + str(mean_absolute_error(y, y_predict_weights))
@@ -128,7 +128,7 @@ def train(all_df):
     # training predictions
     #
 
-    y_train_predict_baseline = np.ones(len(y_train))*y_train_mean
+    y_train_predict_mean = np.ones(len(y_train))*y_train_mean
 
     lightgbm_model = train_lightgbm(x_train, y_train)
     y_train_predict_lightgbm = lightgbm_model.predict(x_train)
@@ -137,25 +137,25 @@ def train(all_df):
     xgboost_model = train_xgboost(xgb_xy_train, y_train)
     y_train_predict_xgboost = xgboost_model.predict(xgb_xy_train)
 
-    weights = train_for_weights(y_train_predict_baseline, y_train_predict_lightgbm, y_train_predict_xgboost, y_train)
+    weights = train_for_weights(y_train_predict_mean, y_train_predict_lightgbm, y_train_predict_xgboost, y_train)
     print "Weights: ", weights
-    y_train_weight = predict_weights(weights, y_train_predict_baseline, y_train_predict_lightgbm, y_train_predict_xgboost)
+    y_train_weight = predict_weights(weights, y_train_predict_mean, y_train_predict_lightgbm, y_train_predict_xgboost)
 
-    print_mae(y_train_predict_baseline, y_train_predict_lightgbm, y_train_predict_xgboost, y_train_weight, y_train)
+    print_mae(y_train_predict_mean, y_train_predict_lightgbm, y_train_predict_xgboost, y_train_weight, y_train)
 
     #
     # test predictions
     #
 
-    y_test_predict_baseline = np.ones(len(y_test))*y_train_mean
+    y_test_predict_mean = np.ones(len(y_test))*y_train_mean
 
     y_test_predict_lightgbm = lightgbm_model.predict(x_test)
     xgb_xy_test = xgb.DMatrix(x_test, y_test)
     y_test_predict_xgboost = xgboost_model.predict(xgb_xy_test)
 
-    y_test_weight = predict_weights(weights, y_test_predict_baseline, y_test_predict_lightgbm, y_test_predict_xgboost)
+    y_test_weight = predict_weights(weights, y_test_predict_mean, y_test_predict_lightgbm, y_test_predict_xgboost)
 
-    print_mae(y_test_predict_baseline, y_test_predict_lightgbm, y_test_predict_xgboost, y_test_weight, y_test)
+    print_mae(y_test_predict_mean, y_test_predict_lightgbm, y_test_predict_xgboost, y_test_weight, y_test)
 
 
 # prepare data and save it to disk to reduce iteration time
