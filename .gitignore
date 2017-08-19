@@ -7,6 +7,5 @@ src/lab
 *.aux
 *.log
 *.toc
-*.pdf
 *.out
 .DS_Store

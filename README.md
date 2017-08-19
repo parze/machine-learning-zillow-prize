@@ -6,7 +6,9 @@ Following files can be found in this Git repo.
 - _[project folder]_ - is the main folder for this project and if you cloned this git repo its called zillow-prize
 - _[project folder]/README.md_ (this file) contains an overview of the files in this project and how to get the code running.
 - _[project folder]/data_ - should contain data files once downloaded (see below)
-- _[project folder]/src_ - contains the report and source code for solving the problem
+- _[project folder]/src/kernel.py_ - is the python code solving the problem
+- _[project folder]/src/report/report.tex_ - is the Latex report source file
+- _[project folder]/src/report/report.pdf_ - is the generated PDF report
 
 ## Install Dependencies
 External dependencies need to be installed are 
@@ -28,6 +30,6 @@ place them in folder _[project folder]/data/original_
  
 ## Run Code
 After you have installed all dependencies and downloaded data files you may run the source code solving the problem by
-1. open a python command prompth 
+1. open a python command prompt 
 2. stepping into the _[project folder]_
 3. run the code by ``` $ python src/kernel.py ```
