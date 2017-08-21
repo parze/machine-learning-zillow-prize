@@ -158,17 +158,16 @@ def train(all_df):
     print_mae(y_test_predict_mean, y_test_predict_lightgbm, y_test_predict_xgboost, y_test_weight, y_test)
 
 
-# prepare data and save it to disk to reduce iteration time
+# ---- Option 1 ----
+# this will prepare and train on original data in one go
+
+train(prepare_data_all())
+
+
+# ---- Option 2 ----
+# this will first prepare data and save to disk. then training will be done reading from file
+# this will reduce iteration time when running training many times
+
 #prepare_data_and_save()
 
-
-# this will prepare and train on original data
-#train(prepare_data_all())
-
-
-# this will train on already prepared data to reduce iteration time
-train(all_df=pd.read_csv('../data/all_df.csv'))
-
-
-
-
+#train(all_df=pd.read_csv('../data/all_df.csv'))
