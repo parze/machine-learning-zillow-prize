@@ -165,7 +165,7 @@ train(prepare_data_all())
 
 
 # ---- Option 2 ----
-# this will first prepare data and save to disk. then training will be done reading from file
+# this will first prepare data and save to disk. then training will be done reading from file.
 # this will reduce iteration time when running training many times
 
 #prepare_data_and_save()
