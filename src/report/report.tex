@@ -174,7 +174,7 @@ The closer to zero the \textit{Mean Absolute Error} metric is, the better the mo
 % preprocessing is necessary, it has been clearly justified.
 The data is prepared in following steps before fed to LightGBM and XGBoost.
 \begin{enumerate}
-    \item Remove outliers to prevent the model to reduce generalization due to data points not likely to reflect possible future data
+    \item Remove outliers to prevent the model to reduce generalization due to data points not likely to reflect possible future data. Outliers was defined as before the first and after the 99 percentile.
     \item Convert types so that the data can be used in LightGBM and XGBoost
     \item Enriching the train data in file \textit{train\_2016.csv} with property data in file
         \textit{properties\_2016.csv} by joining on \textit{parcelid}
