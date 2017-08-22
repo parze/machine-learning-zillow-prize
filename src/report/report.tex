@@ -50,7 +50,8 @@ Zillow provide an error from using their own model trying to predict estate pric
 Zillow is asking to predict the \textit{logerror} between their Zestimate model and the
 actual sale price, given all the features of a home. The \textit{logerror} is defined as
 \[ logerror = log(Zestimate) - log(SalePrice) \]
-\textit{Mean Absolute Error} is then used as the metric on the logerror individually for Mean, LightGBM, XGBoost, and Weighted model.
+\textit{Mean Absolute Error} (MAE) is then used as the metric on the logerror individually for Mean, LightGBM, XGBoost, and Weighted model. It's simple and fast to compute and works well with selected models. The formula is 
+\[ MAE(y_{true}, y_{pred}) = \frac{1}{n} \sum_{i=1}^{n} |y_{pred}(i) - y_{true}(i)| \]
 
 
 \section{Analysis}
