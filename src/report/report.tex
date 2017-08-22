@@ -138,6 +138,7 @@ If we look at features with a correlation less than -0.01 and more than 0.02 we 
 \subsection{Algorithms and Techniques}
 % Algorithms and techniques used in the project are thoroughly discussed and properly 
 % justified based on the characteristics of the problem.
+\subsubsection{Overview}
 I have selected the approach of weighing the result of following three different algorithm.
 \begin{itemize}
     \item
@@ -147,7 +148,18 @@ I have selected the approach of weighing the result of following three different
     \item
         \textit{XGBoost} implements the gradient boosting tree based model as well. The library is optimized to be a scalable, portable and accurate library.
 \end{itemize}
-LightGBM and XGBoost will be able to handle the large data set at hand. They are battle proven and have been used to win a lot of machine learning contests. Gradient boosting trees are prone to overfit so extra caution must be taken tuning parameters. The result from these three models will then be weighted according to the best weights found using the training set. Often the result of weighing the result from different models creates a better result then any of the models by them self.
+LightGBM and XGBoost are tree based Gradient boosting models. The result from these three models will then be weighted according to the best weights found using the training set. Often the result of weighing the result from different models creates a better result then any of the models by them self
+
+\subsubsection{Gradient Tree Boosting Models}
+Gradient tree boosting can be used for regression and classification which produce prediction by ensemble of weak decision trees.
+
+A decision tree predicts a label by starting at the root of the tree, selecting branches at every node using the feature base statement defined at each node, ending up in a leaf which contains the prediction. A weak decision tree is a tree that have few leaves (generally 4-8 leafs).
+
+In Gradient boosting weak decision trees are added one at a time. Once a tree is added, it will not change. A new tree is added such that the loss is reduced. This is done by parameterize the tree and changing the parameters using the gradient decent.
+
+Gradient boosting tree has excellent accuracy which is the main reason for using it in this problem. Correlation between the logerror and features are low which indicate that a sensitive algorithm is needed to be able to predict the logerror. However, Gradient boosting trees are prone to overfit so extra caution must be taken tuning parameters.
+
+In general, Gradient tree boosting models has proven to produce good predictions.
 
 \subsection{Benchmark}
 % Student clearly defines a benchmark result or threshold for comparing performances of solutions obtained.
