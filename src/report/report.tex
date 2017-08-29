@@ -296,23 +296,26 @@ The \textit{Diff} column is the difference between Zero model and the Weighted m
 
 
 \section{Conclusion}
-Zestimate algorithm used by Zillow is doing a good job. The correlation between the logerror and
-different features are low (Figure \ref{fig:prop-corr-feature}) and even if the Weighted model is utilizing some of the little information that exists to improve the result towards zero, it is not with much. It could be possible to tune the Weighted model some more but I think that it would not give much result. To make major improvements, new information is needed.
 
-Interesting observation is that the weighing the predictions the Mean, LightGBM, and XGBoost generates a better overall MAE then for any individual model.
+\subsection{Free-Form Visualization}
+% A visualization has been provided that emphasizes an important quality about the project 
+% with thorough discussion. Visual cues are clearly defined.
+The correlation between the logerror and different features are low (Figure \ref{fig:prop-corr-feature}) and even if the Weighted model is utilizing some of the little information that exists to improve the result towards zero, it is not with much. It improves the MAE result with about 1.7\% compared with the Zero model. 
 
+\subsection{Reflection}
+% Student adequately summarizes the end-to-end problem solution and discusses one or two 
+% particular aspects of the project they found interesting or difficult.
+Zillow asked to predict the logerror which is an error produced when they try to predict prices for real estates. Predicting the logerror turned out to be hard which indicate that Zestimate algorithm used by Zillow is doing a good job. Their ability to predict house prices seams to be quite good.
 
-%\subsection{Free-Form Visualization}
-% A visualization has been provided that emphasizes an important quality about the project with thorough discussion.
-% Visual cues are clearly defined.
+Another interesting observation is that the weighing the predictions the Mean, LightGBM, and XGBoost generates a better overall MAE then for any individual model.
 
-%\subsection{Reflection}
-% Student adequately summarizes the end-to-end problem solution and discusses one or two particular aspects of
-% the project they found interesting or difficult.
 
 \subsection{Improvement}
-% Discussion is made as to how one aspect of the implementation could be improved. Potential solutions resulting
-% from these improvements are considered and compared / contrasted to the current solution.
+% Discussion is made as to how one aspect of the implementation could be improved. 
+% Potential solutions resulting from these improvements are considered and 
+% compared / contrasted to the current solution.
+It could be possible to tune the Weighted model some more but I think that it would not give much better result. To make major improvements, new information is needed.
+
 Adding more models could improve the result, but most likely not with much. Continue tuning parameters might improve the result some more, but most likely not with much.
 
 Adding more information is probably a better approach Using the transaction date to extract the day of the week would add information that is currently hidden. Longitude and latitude could also be used to compute distances to attractive locations like the sea or bigger cities.
