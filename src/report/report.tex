@@ -278,9 +278,11 @@ Mean Absolute Error and Weights for the \textbf{test} data was
 % of statistical analysis. Justification is made as to whether the final model and 
 % solution is significant enough to have adequately solved the problem.
 
+The robustness is checked for the Weighted model by running it on the separate test data. 
+
 Parameters been tuned individually and care been taken to not overfit looking at the Mean Absolute Error for training as well test data.
 
-Changing the \textit{random state seed} will pick a different train set, pick a different test set, and train models using different entropy. Following are the seeds and errors from the different models.
+Changing the \textit{random state seed} will pick a different train set, pick a different test set, and train models using different entropy. As you can see below, different seeds the test data generates a predictive and good result showing the robustness of the model. Following are the seeds and errors from the different models on the test data set.
 \begin{center}
 \begin{tabular}{ l l l l l l l }
     \textbf{Seed} & \textbf{Zero} & \textbf{Mean} & \textbf{LightGBM} & \textbf{XGBoost} & \textbf{Weighted} & \textbf{Diff} \\
@@ -291,6 +293,7 @@ Changing the \textit{random state seed} will pick a different train set, pick a 
 \end{tabular}
 \end{center}
 The \textit{Diff} column is the difference between Zero model and the Weighted model and it seems to stay steady above \textbf{0.000797}. This indicates that the Weighted model can find and use some information in the data to make a better prediction than just a simple zero approach. That said, it is still a long way down to zero which means that there a lot of room for improvement.
+
 
 \section{Conclusion}
 Zestimate algorithm used by Zillow is doing a good job. The correlation between the logerror and
