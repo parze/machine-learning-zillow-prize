@@ -187,6 +187,18 @@ The data is prepared in following steps before fed to LightGBM and XGBoost.
 % The process for which metrics, algorithms, and techniques were implemented with the 
 % given datasets or input data has been thoroughly documented. Complications that 
 % occurred during the coding process are discussed.
+\subsubsection{Libraries}
+Numpy is used to handle all statistical ground work, like removing outliers, converting data types, and mean computations. Scikit-learn was used to compute MAE and split data into a train and test set. Panda was used to read and write data to disk and merge data sets. LightGBM and XGBoost are two libraries that need to be downloaded and installed separately. 
+
+
+\subsubsection{Overview}
+The implementation is divided up into two parts, training and the test part. The data is also divided into two parts. The test size of the data is 33\% while the train size is 67\%. A random state seed was used everywhere to enable identical runs.
+
+The Mean, LightGBM, and XGBoost is first trained individually. Parameters for LightGBM and XGBoost are tuned independent of each other. Once all three models are trained and tuned, the weights are trained by randomly select the weights over and over again until a minimum MAE is obtained on the weighted sum. To prevent overfitting the weights, a minimum weight of 0.1 is set for LightGBM and XGBoost. 
+
+
+\subsubsection{Pseudocode}
+
 The overall implementation steps are
 \begin{enumerate}
     \item Preprocessing and train for LightGBM using train data
@@ -198,6 +210,14 @@ The overall implementation steps are
     \item Compute the performance using the Mean Absolute Error metric
     \item Adjust configuration parameters for LightGBM and XGBoost and start over at the top
 \end{enumerate}
+
+
+\subsubsection{Complications}
+Preparing the data so that LightGBM and XGBoost would not crash took a lot of time. Data type transformations were needed.
+
+The sum of the weights for the three models need to be 1.0 while each weight is positive. At first I did not check for positive weights and this generated a less accurate Weighted model. 
+
+Before adding the lower limit on the weights of 0.1 for LightGBM and XGBoost the XGBoost got most of the weights which generated a worse test. The lower limit contributed to allowing the Weighted model to generalize better.
 
 
 \subsection{Refinement}
