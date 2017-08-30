@@ -19,17 +19,16 @@
 \tableofcontents
 
 \section{Project Definition}
-An overview of the project definition is described below. For more details see the competition
-\href{https://www.kaggle.com/c/zillow-prize-1#description}{Zillow Prize}.
+An overview of the project definition is described below. For more details see the competition Zillow Prize \cite{zillowprize}.
 
 \subsection{Project Overview}
 %
 % Student provides a high-level overview of the project in layman’s terms. Background information such as the
 % problem domain, the project origin, and related data sets or input data is given.
 %
-I selected the competition \href{https://www.kaggle.com/c/zillow-prize-1#description}{Zillow Prize} found at \href{https://www.kaggle.com}{Kaggle} as the Capstone project in my \textit{Machine Learning Engineer Nanodegree} provided by \href{https://www.udacity.com}{Udacity}.
+I selected the competition Zillow Prize \cite{zillowprize} found at Kaggle \cite{kaggle} as the Capstone project in my \textit{Machine Learning Engineer Nanodegree} provided by Udacity \cite{udacity}.
 
-\href{https://www.zillow.com}{Zillow} is the leading real estate and rental marketplace dedicated to empowering consumers with data. They launched the Kaggle competition \textit{Zillow Prize} to improve their ability to predict house prices.
+Zillow \cite{zillow} is the leading real estate and rental marketplace dedicated to empowering consumers with data. They launched the Kaggle competition Zillow Prize \cite{zillowprize} to improve their ability to predict house prices.
 
 I selected this competition to learn from the rich source of knowledge the community around these competitions provide. Comparing and learning from public Kernels provided gives a good benchmark of cutting edge models for these kind of problems.
 
@@ -40,7 +39,7 @@ I selected this competition to learn from the rich source of knowledge the commu
 %
 They have been developing their own model to predict prices for years. The problem at hand is to see if the Kaggle community can improve on it creating an even better model. 
 
-Zillow provide an error from using their own model trying to predict estate prices. The problem is to predict that error. This is a regression task and a weighted solution of three models will be used. First model is a simple model where the mean of the training data is the prediction for all estates. Second and third model are two different tree based Gradient boosting models called LightGBM and XGBoost.
+Zillow provide an error from using their own model trying to predict estate prices. The problem is to predict that error. This is a regression task and a weighted solution of three models will be used. First model is a simple model where the mean of the training data is the prediction for all estates. Second and third model are two different tree based Gradient boosting models called LightGBM \cite{lightgbm} and XGBoost \cite{xgboost}.
 
 \subsection{Metrics}
 %
@@ -50,7 +49,7 @@ Zillow provide an error from using their own model trying to predict estate pric
 Zillow is asking to predict the \textit{logerror} between their Zestimate model and the
 actual sale price, given all the features of a home. The \textit{logerror} is defined as
 \[ logerror = log(Zestimate) - log(SalePrice) \]
-\textit{Mean Absolute Error} (MAE) is then used as the metric on the logerror individually for Mean, LightGBM, XGBoost, and Weighted model. It's simple and fast to compute and works well with selected models. The formula is 
+\textit{Mean Absolute Error} (MAE) is then used as the metric on the logerror individually for Mean, LightGBM \cite{lightgbm}, XGBoost \cite{xgboost}, and Weighted model. It's simple and fast to compute and works well with selected models. The formula is 
 \[ MAE(y_{true}, y_{pred}) = \frac{1}{n} \sum_{i=1}^{n} |y_{pred}(i) - y_{true}(i)| \]
 
 
@@ -65,7 +64,7 @@ actual sale price, given all the features of a home. The \textit{logerror} is de
 % A visualization has been provided that summarizes or extracts a relevant characteristic 
 % or feature about the dataset or input data with thorough discussion. Visual cues are 
 % clearly defined.
-This data exploration is inspired by the \href{https://www.kaggle.com/sudalairajkumar/simple-exploration-notebook-zillow-prize}{Simple Exploration Notebook - Zillow Prize} written by Kaggle Grandmaster \href{https://www.kaggle.com/sudalairajkumar}{SRK}.
+This data exploration is inspired by the Simple Exploration Notebook - Zillow Prize \cite{datavis} written by Kaggle Grandmaster SRK \cite{srk}.
 
 We will be working with following data files
 \begin{itemize}
@@ -103,7 +102,7 @@ Looking at Figure \ref{fig:logerror} the logerror has a nice normal distribution
 \includegraphics[width=1\textwidth]{./img/train-transactiondate.png}
 \caption{\label{fig:transactions}Number of transactions over time}
 \end{figure}
-According to Zillow the training data has all the transactions before October 15, 2016, plus some of the transactions after October 15, 2016. Looking at Figure \ref{fig:transactions} from January to September there are about 6000-11000 transactions per month while dropping to under 2000 in November to December.
+According to Zillow \cite{zillowprize} the training data has all the transactions before October 15, 2016, plus some of the transactions after October 15, 2016. Looking at Figure \ref{fig:transactions} from January to September there are about 6000-11000 transactions per month while dropping to under 2000 in November to December.
 
 \subsubsection{Properties}
 Property data file \textit{properties\_2016.csv} is a lot larger with 2985217 rows and 58 columns describing home features. It seems like some of the columns contain less information in the form of NaN values.
@@ -132,8 +131,6 @@ There are many features, so let take a look at the correlation between the loger
 \end{figure}
 If we look at features with a correlation less than -0.01 and more than 0.02 we may filter out nine features. High correlation between these features might indicate that they contain the same type of information which most likely makes prediction harder than if little correlation exists. Looking at Figure \ref{fig:prop-corr-feature} show quite high correlation between features, especially between features relating to room counts and house size.
 
-% TODO: add no pattern for major features
-
 
 \subsection{Algorithms and Techniques}
 % Algorithms and techniques used in the project are thoroughly discussed and properly 
@@ -144,11 +141,11 @@ I have selected the approach of weighing the result of following three different
     \item
         \textit{Mean} which is the simple prediction of predicting all by the mean of the training data. The logerror seems to follow the normal distribution and this is the mean that we are after and is estimated by the mean of the training data.
     \item
-        \textit{LightGBM} is a gradient boosting framework that uses tree based learning algorithms. It is a high speed, high accuracy, and large scale data library.
+        \textit{LightGBM} \cite{lightgbm} is a gradient boosting framework that uses tree based learning algorithms. It is a high speed, high accuracy, and large scale data library.
     \item
-        \textit{XGBoost} implements the gradient boosting tree based model as well. The library is optimized to be a scalable, portable and accurate library.
+        \textit{XGBoost} \cite{xgboost} implements the gradient boosting tree based model as well. The library is optimized to be a scalable, portable and accurate library.
 \end{itemize}
-LightGBM and XGBoost are tree based Gradient boosting models. The result from these three models will then be weighted according to the best weights found using the training set. Often the result of weighing the result from different models creates a better result then any of the models by them self
+LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} are tree based Gradient boosting models. The result from these three models will then be weighted according to the best weights found using the training set. Often the result of weighing the result from different models creates a better result then any of the models by them self
 
 \subsubsection{Gradient Tree Boosting Models}
 Gradient tree boosting can be used for regression and classification which produce prediction by ensemble of weak decision trees.
@@ -172,10 +169,10 @@ The closer to zero the \textit{Mean Absolute Error} metric is, the better the mo
 % All preprocessing steps have been clearly documented. Abnormalities or characteristics 
 % about the data or input that needed to be addressed have been corrected. If no data 
 % preprocessing is necessary, it has been clearly justified.
-The data is prepared in following steps before fed to LightGBM and XGBoost.
+The data is prepared in following steps before fed to LightGBM \cite{lightgbm} and XGBoost \cite{xgboost}.
 \begin{enumerate}
     \item Remove outliers to prevent the model to reduce generalization due to data points not likely to reflect possible future data. Outliers was defined as before the first and after the 99 percentile.
-    \item Convert types so that the data can be used in LightGBM and XGBoost
+    \item Convert types so that the data can be used in LightGBM \cite{lightgbm} and XGBoost \cite{xgboost}
     \item Enriching the train data in file \textit{train\_2016.csv} with property data in file
         \textit{properties\_2016.csv} by joining on \textit{parcelid}
     \item Adding the month of the transaction as a feature
@@ -188,36 +185,36 @@ The data is prepared in following steps before fed to LightGBM and XGBoost.
 % given datasets or input data has been thoroughly documented. Complications that 
 % occurred during the coding process are discussed.
 \subsubsection{Libraries}
-Numpy is used to handle all statistical ground work, like removing outliers, converting data types, and mean computations. Scikit-learn was used to compute MAE and split data into a train and test set. Panda was used to read and write data to disk and merge data sets. LightGBM and XGBoost are two libraries that need to be downloaded and installed separately. 
+Numpy is used to handle all statistical ground work, like removing outliers, converting data types, and mean computations. Scikit-learn was used to compute MAE and split data into a train and test set. Panda was used to read and write data to disk and merge data sets. LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} are two libraries that need to be downloaded and installed separately. 
 
 
 \subsubsection{Overview}
 The implementation is divided up into two parts, training and the test part. The data is also divided into two parts. The test size of the data is 33\% while the train size is 67\%. A random state seed was used everywhere to enable identical runs.
 
-The Mean, LightGBM, and XGBoost is first trained individually. Parameters for LightGBM and XGBoost are tuned independent of each other. Once all three models are trained and tuned, the weights are trained by randomly select the weights over and over again until a minimum MAE is obtained on the weighted sum. To prevent overfitting the weights, a minimum weight of 0.1 is set for LightGBM and XGBoost. 
+The Mean, LightGBM \cite{lightgbm}, and XGBoost \cite{xgboost} is first trained individually. Parameters for LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} are tuned independent of each other. Once all three models are trained and tuned, the weights are trained by randomly select the weights over and over again until a minimum MAE is obtained on the weighted sum. To prevent overfitting the weights, a minimum weight of 0.1 is set for LightGBM \cite{lightgbm} and XGBoost \cite{xgboost}. 
 
 
-\subsubsection{Pseudocode}
+\subsubsection{Steps}
 
 The overall implementation steps are
 \begin{enumerate}
-    \item Preprocessing and train for LightGBM using train data
-    \item Preprocessing and train for XGBoost using train data
-    \item Find the best weights for the tree models by randomly trying different values on the train result from above. I selected a minimum weight of 0.1 for the LightGBM and XGBoost models.
-    \item Predict \textit{logerror} for test data using LightGBM
-    \item Predict \textit{logerror} for test data using XGBoost
-    \item Predict final \textit{logerror} for test data weighing together LightGBM, XGBoost, and the constant model using the weights from above.
+    \item Preprocessing and train for LightGBM \cite{lightgbm} using train data
+    \item Preprocessing and train for XGBoost \cite{xgboost} using train data
+    \item Find the best weights for the tree models by randomly trying different values on the train result from above. I selected a minimum weight of 0.1 for the LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} models.
+    \item Predict \textit{logerror} for test data using LightGBM \cite{lightgbm}
+    \item Predict \textit{logerror} for test data using XGBoost \cite{xgboost}
+    \item Predict final \textit{logerror} for test data weighing together LightGBM \cite{lightgbm}, XGBoost \cite{xgboost}, and the constant model using the weights from above.
     \item Compute the performance using the Mean Absolute Error metric
-    \item Adjust configuration parameters for LightGBM and XGBoost and start over at the top
+    \item Adjust configuration parameters for LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} and start over at the top
 \end{enumerate}
 
 
 \subsubsection{Complications}
-Preparing the data so that LightGBM and XGBoost would not crash took a lot of time. Data type transformations were needed.
+Preparing the data so that LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} would not crash took a lot of time. Data type transformations were needed.
 
 The sum of the weights for the three models need to be 1.0 while each weight is positive. At first I did not check for positive weights and this generated a less accurate Weighted model. 
 
-Before adding the lower limit on the weights of 0.1 for LightGBM and XGBoost the XGBoost got most of the weights which generated a worse test. The lower limit contributed to allowing the Weighted model to generalize better.
+Before adding the lower limit on the weights of 0.1 for LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} the XGBoost \cite{xgboost} got most of the weights which generated a worse test. The lower limit contributed to allowing the Weighted model to generalize better.
 
 
 \subsection{Refinement}
@@ -307,7 +304,7 @@ The correlation between the logerror and different features are low (Figure \ref
 % particular aspects of the project they found interesting or difficult.
 Zillow asked to predict the logerror which is an error produced when they try to predict prices for real estates. Predicting the logerror turned out to be hard which indicate that Zestimate algorithm used by Zillow is doing a good job. Their ability to predict house prices seams to be quite good. Even so, an improvement was made.
 
-Another interesting observation is that the weighing the predictions the Mean, LightGBM, and XGBoost generates a better overall MAE then for any individual model.
+Another interesting observation is that the weighing the predictions the Mean, LightGBM \cite{lightgbm}, and XGBoost \cite{xgboost} generates a better overall MAE then for any individual model.
 
 
 \subsection{Improvement}
@@ -318,7 +315,45 @@ It could be possible to tune the Weighted model some more but I think that it wo
 
 Adding more models could improve the result, but most likely not with much. Continue tuning parameters might improve the result some more, but most likely not with much.
 
-Adding more information is probably a better approach Using the transaction date to extract the day of the week would add information that is currently hidden. Longitude and latitude could also be used to compute distances to attractive locations like the sea or bigger cities.
+Adding more information is probably a better approach Using the transaction date to extract the day of the week would add information that is currently hidden. Longitude and latitude could also be used to compute distances to attractive locations like the sea or bigger cities. 
 
+
+\begin{thebibliography}{9}		
+
+\bibitem{zillowprize} 
+Zillow Prize
+\\\texttt{https://www.kaggle.com/c/zillow-prize-1\#description}
+
+\bibitem{kaggle} 
+Kaggle
+\\\texttt{https://www.kaggle.com}
+
+\bibitem{udacity} 
+Udacity
+\\\texttt{https://www.udacity.com}
+
+\bibitem{zillow} 
+Zillow
+\\\texttt{https://www.zillow.com}
+
+\bibitem{datavis} 
+Simple Exploration Notebook - Zillow Prize
+\\\texttt{https://www.kaggle.com/sudalairajkumar/simple-exploration-notebook-zillow-prize}
+
+\bibitem{srk} 
+Kaggle Grandmaster SRK
+\\\texttt{https://www.kaggle.com/sudalairajkumar}
+
+\bibitem{lightgbm} 
+LightGBM
+\\\texttt{https://github.com/Microsoft/LightGBM}		
+
+\bibitem{xgboost} 
+XGBoost
+\\\texttt{https://xgboost.readthedocs.io/en/latest/}
+
+\end{thebibliography}
 
 \end{document}
+
+
