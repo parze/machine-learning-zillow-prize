@@ -119,7 +119,7 @@ def print_mae(y_predict_mean, y_predict_lightgbm, y_predict_xgboost, y_predict_w
 
 
 def train(all_df):
-    x = all_df.drop(['parcelid', 'logerror', 'transactiondate'], axis=1)
+    x = all_df.drop([all_df.columns[0], 'logerror', 'transactiondate'], axis=1)
     y = all_df['logerror'].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=random_state_seed)
     y_train_mean = np.mean(y_train)
