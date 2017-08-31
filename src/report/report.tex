@@ -295,6 +295,8 @@ The \textit{Diff} column is the difference between Zero model and the Weighted m
 \section{Conclusion}
 % A visualization has been provided that emphasizes an important quality about the project 
 % with thorough discussion. Visual cues are clearly defined.
+Zillow Prize \cite{zillowprize} is a competition at Kaggle \cite{kaggle} which is sponsored by Zillow \cite{zillow}. The challenge is to predict a logerror that is the error produced when Zillow's algorithm predicted the prise. After preparing the data it was divided up into a train and test part. The LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} were trained and tuned separately after which optimal weights for weighing Mean, LightGBM \cite{lightgbm} and XGBoost \cite{xgboost} models together. Test data was used to tune model parameters, validate and evaluate final result.
+
 The correlation between the logerror and different features are low (Figure \ref{fig:prop-corr-feature}) and even if the Weighted model is utilizing some of the little information that exists to improve the result towards zero, it is not with much. It improves the MAE result with about 1.7\% compared with the Zero model. 
 
 
