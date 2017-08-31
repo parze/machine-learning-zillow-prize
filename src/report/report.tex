@@ -176,7 +176,7 @@ The data is prepared in following steps before fed to LightGBM \cite{lightgbm} a
     \item Enriching the train data in file \textit{train\_2016.csv} with property data in file
         \textit{properties\_2016.csv} by joining on \textit{parcelid}
     \item Adding the month of the transaction as a feature
-    \item Removed columns \textit{parcelid} and \textit{transactiondate} since these will most likely not improve the prediction
+    \item Removed column \textit{transactiondate} since these will most likely not improve the prediction
     \item Split data into train and test
 \end{enumerate}
 
@@ -293,11 +293,19 @@ The \textit{Diff} column is the difference between Zero model and the Weighted m
 
 
 \section{Conclusion}
-
-\subsection{Free-Form Visualization}
 % A visualization has been provided that emphasizes an important quality about the project 
 % with thorough discussion. Visual cues are clearly defined.
 The correlation between the logerror and different features are low (Figure \ref{fig:prop-corr-feature}) and even if the Weighted model is utilizing some of the little information that exists to improve the result towards zero, it is not with much. It improves the MAE result with about 1.7\% compared with the Zero model. 
+
+
+\subsection{Feature Importance}
+Gradient Tree Boosting Models give the opportunity to estimate how important each feature is to the result at hand. Looking at figure \ref{fig:feature-importance} we can see that the \textit{parselid} sticks out which is a surprise. It seams like the \textit{parselid} is created in a context appending additional information which seems to be important. Size of lot, finished size, and month of transaction is also important. Pool and architecture types seems not to be important.
+\begin{figure}
+	\centering
+	\includegraphics[width=1.1\textwidth]{./img/feature-importance.png}
+	\caption{\label{fig:feature-importance} Feature importance according to XGBoost }
+\end{figure}
+
 
 \subsection{Reflection}
 % Student adequately summarizes the end-to-end problem solution and discusses one or two 
